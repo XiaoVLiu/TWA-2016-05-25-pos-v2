@@ -66,9 +66,17 @@ function calculateSubTotal(items) {
     return items.map(function(item) {
         return Object.assign({
             subTotal: item.count*item.price,
-            discountSubTotal: (item.count-item.freeCount)*item.price,
+            actualSubTotal: (item.count-item.freeCount)*item.price,
         }, item);
     })
+}
+
+function calculateTotal(cartItems) {
+    var total = 0;
+    cartItems.forEach(function(item){
+        total += item.actualSubTotal;
+    });
+    return total;
 }
 
 function printInventory(inputs) {
@@ -80,5 +88,7 @@ function printInventory(inputs) {
     var cartPromoteItems = calculateFreeCount(mergeItems, promotions);
     var cartItems = calculateSubTotal(cartPromoteItems);
 
-    console.debug(cartItems);
+    var total = calculateTotal(cartItems);
+
+    console.debug(total, cartItems);
 }
