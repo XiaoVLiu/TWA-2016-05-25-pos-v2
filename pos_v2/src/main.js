@@ -102,7 +102,7 @@ function getPromoteItems(cartItems){
     return promoteItems;
 }
 
-function buildReceiptString(cartItems, promoteItems, total, saveMoney){
+function buildDateString(){
     var dateDigitToString = function (num) {
         return num < 10 ? '0' + num : num;
     };
@@ -114,8 +114,14 @@ function buildReceiptString(cartItems, promoteItems, total, saveMoney){
         minute = dateDigitToString(currentDate.getMinutes()),
         second = dateDigitToString(currentDate.getSeconds()),
         formattedDateString = year + '年' + month + '月' + date + '日 ' + hour + ':' + minute + ':' + second;
+    return formattedDateString;
+}
 
-    var receiptString = '***<没钱赚商店>购物清单***\n' + '打印时间：' + formattedDateString + '\n' + '----------------------\n';
+function buildReceiptString(cartItems, promoteItems, total, saveMoney){
+    var receiptString = '***<没钱赚商店>购物清单***\n' +
+        '打印时间：' + buildDateString() + '\n' +
+        '----------------------\n';
+
     cartItems.forEach(function(item){
         receiptString += '名称：'+item.name+'，数量：'+item.count+item.unit+'，单价：'+item.price.toFixed(2)+'(元)，小计：'+item.actualSubTotal.toFixed(2)+'(元)\n';
     });
