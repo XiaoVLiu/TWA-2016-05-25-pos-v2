@@ -54,7 +54,7 @@ function calculateFreeCount(mergeItems, promotions) {
     });
 
     return mergeItems.map(function(item) {
-        var resultItem = Object.assign({
+        var resultItem = Object.assign( {
             freeCount: calculateItemFreeCount(promoteBarcodes.barcodes, item)
         }, item);
 
@@ -64,7 +64,7 @@ function calculateFreeCount(mergeItems, promotions) {
 
 function calculateSubTotal(items) {
     return items.map(function(item) {
-        return Object.assign({
+        return Object.assign( {
             subTotal: item.count*item.price,
             actualSubTotal: (item.count-item.freeCount)*item.price,
         }, item);
@@ -73,7 +73,7 @@ function calculateSubTotal(items) {
 
 function calculateTotal(cartItems) {
     var total = 0;
-    cartItems.forEach(function(item){
+    cartItems.forEach(function(item) {
         total += item.actualSubTotal;
     });
     return total;
@@ -81,17 +81,17 @@ function calculateTotal(cartItems) {
 
 function calculateSaveMoney(cartItems) {
     var saveMoney = 0;
-    cartItems.forEach(function(item){
+    cartItems.forEach(function(item) {
         saveMoney += item.freeCount*item.price;
     });
     return saveMoney;
 }
 
-function getPromoteItems(cartItems){
+function getPromoteItems(cartItems) {
     var promoteItems = [];
 
-    cartItems.forEach(function(item){
-        if (item.freeCount>0){
+    cartItems.forEach(function(item) {
+        if (item.freeCount>0) {
             var promoteItem = {};
             promoteItem.name = item.name;
             promoteItem.freeCount = item.freeCount;
@@ -102,7 +102,7 @@ function getPromoteItems(cartItems){
     return promoteItems;
 }
 
-function buildDateString(){
+function buildDateString() {
     var dateDigitToString = function (num) {
         return num < 10 ? '0' + num : num;
     };
@@ -117,18 +117,18 @@ function buildDateString(){
     return formattedDateString;
 }
 
-function buildReceiptString(cartItems, promoteItems, total, saveMoney){
+function buildReceiptString(cartItems, promoteItems, total, saveMoney) {
     var receiptString = '***<没钱赚商店>购物清单***\n' +
         '打印时间：' + buildDateString() + '\n' +
         '----------------------\n';
 
-    cartItems.forEach(function(item){
+    cartItems.forEach(function(item) {
         receiptString += '名称：'+item.name+'，数量：'+item.count+item.unit+'，单价：'+item.price.toFixed(2)+'(元)，小计：'+item.actualSubTotal.toFixed(2)+'(元)\n';
     });
     receiptString += "----------------------\n";
 
     receiptString += '挥泪赠送商品：\n';
-    promoteItems.forEach(function(item){
+    promoteItems.forEach(function(item) {
         receiptString += '名称：'+item.name+'，数量：'+item.freeCount+item.unit+'\n';
     });
 
