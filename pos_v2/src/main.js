@@ -79,6 +79,14 @@ function calculateTotal(cartItems) {
     return total;
 }
 
+function calculateSaveMoney(cartItems) {
+    var saveMoney = 0;
+    cartItems.forEach(function(item){
+        saveMoney += item.freeCount*item.price;
+    });
+    return saveMoney;
+}
+
 function printInventory(inputs) {
     var allItems = loadAllItems();
     var promotions = loadPromotions();
@@ -89,6 +97,7 @@ function printInventory(inputs) {
     var cartItems = calculateSubTotal(cartPromoteItems);
 
     var total = calculateTotal(cartItems);
+    var saveMoney = calculateSaveMoney(cartItems);
 
-    console.debug(total, cartItems);
+    console.debug(total, cartItems, saveMoney);
 }
