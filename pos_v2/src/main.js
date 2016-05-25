@@ -53,8 +53,6 @@ function calculateFreeCount(mergeItems, promotions) {
         return item.type = 'BUY_TWO_GET_ONE_FREE';
     });
 
-    console.debug(promoteBarcodes);
-
     return mergeItems.map(function(item) {
         var resultItem = Object.assign({
             freeCount: calculateItemFreeCount(promoteBarcodes.barcodes, item)
@@ -63,6 +61,16 @@ function calculateFreeCount(mergeItems, promotions) {
         return resultItem;
     })
 }
+
+function calculateSubTotal(items) {
+    return items.map(function(item) {
+        return Object.assign({
+            subTotal: item.count*item.price,
+            discountSubTotal: (item.count-item.freeCount)*item.price,
+        }, item);
+    })
+}
+
 function printInventory(inputs) {
     var allItems = loadAllItems();
     var promotions = loadPromotions();
@@ -70,6 +78,7 @@ function printInventory(inputs) {
     var tigers = parseTiger(inputs);
     var mergeItems = mergeItem(tigers, allItems);
     var cartPromoteItems = calculateFreeCount(mergeItems, promotions);
+    var cartItems = calculateSubTotal(cartPromoteItems);
 
-    console.debug(cartPromoteItems);
+    console.debug(cartItems);
 }
