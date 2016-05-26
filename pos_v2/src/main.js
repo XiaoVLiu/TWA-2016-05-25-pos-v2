@@ -1,19 +1,19 @@
-function parseTiger(inputs) {
-    var tigers = [];
+function parseTags(inputs) {
+    var tags = [];
     inputs.forEach(function(item) {
-        var tiger = {};
+        var tag = {};
         if (item.match('-')) {
             var split = item.split('-', 2);
-            tiger.barcode = split[0];
-            tiger.count = parseInt(split[1]);
+            tag.barcode = split[0];
+            tag.count = parseInt(split[1]);
         } else {
-            tiger.barcode = item;
-            tiger.count = 1;
+            tag.barcode = item;
+            tag.count = 1;
         }
 
-        tigers.push(tiger);
+        tags.push(tag);
     })
-    return tigers;
+    return tags;
 }
 
 function mergeItem(tigers, allItems) {
@@ -143,8 +143,8 @@ function printInventory(inputs) {
     var allItems = loadAllItems();
     var promotions = loadPromotions();
 
-    var tigers = parseTiger(inputs);
-    var mergeItems = mergeItem(tigers, allItems);
+    var tags = parseTags(inputs);
+    var mergeItems = mergeItem(tags, allItems);
     var cartPromoteItems = calculateFreeCount(mergeItems, promotions);
     var cartItems = calculateSubTotal(cartPromoteItems);
 
