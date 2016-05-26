@@ -95,16 +95,8 @@ function calculateSaveMoney(cartItems) {
 }
 
 function getPromoteItems(cartItems) {
-    var promoteItems = [];
-
-    cartItems.forEach(function(item) {
-        if (item.freeCount>0) {
-            var promoteItem = {};
-            promoteItem.name = item.name;
-            promoteItem.freeCount = item.freeCount;
-            promoteItem.unit = item.unit;
-            promoteItems.push(promoteItem);
-        }
+    var promoteItems = cartItems.filter(function(item){
+        return item.freeCount > 0;
     });
 
     return promoteItems;
@@ -150,12 +142,10 @@ function buildPromoteString(promoteItems) {
 }
 
 function buildTotalString(total, saveMoney) {
-    var result = "";
-
-    result += '----------------------\n';
-    result += '总计：' + total.toFixed(2) + '(元)\n';
-    result += '节省：' + saveMoney.toFixed(2) + '(元)\n';
-    result += "**********************";
+    var result = '----------------------\n'
+        +'总计：' + total.toFixed(2) + '(元)\n'
+        + '节省：' + saveMoney.toFixed(2) + '(元)\n'
+        + "**********************";
 
     return result;
 }
