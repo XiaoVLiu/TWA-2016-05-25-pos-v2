@@ -11,16 +11,16 @@ function parseTags(inputs) {
     return tags;
 }
 
-function mergeItem(tigers, allItems) {
+function mergeItem(tags, allItems) {
     var mergeItems = [];
-    tigers.forEach(function(tiger) {
+    tags.forEach(function(tag) {
         var existItem = mergeItems.find(function(item) {
-            return item.barcode === tiger.barcode;
+            return item.barcode === tag.barcode;
         });
 
         if (!existItem) {
             var assignItem = allItems.find(function(item) {
-                return item.barcode === tiger.barcode;
+                return item.barcode === tag.barcode;
             });
             existItem = Object.assign({
                 count: 0
@@ -29,7 +29,7 @@ function mergeItem(tigers, allItems) {
             mergeItems.push(existItem);
         }
 
-        existItem.count += tiger.count;
+        existItem.count += tag.count;
     })
     return mergeItems;
 }
