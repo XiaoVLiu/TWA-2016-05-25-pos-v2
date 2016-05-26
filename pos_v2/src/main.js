@@ -35,12 +35,15 @@ function mergeItem(tags, allItems) {
 }
 
 function calculateItemFreeCount(barcodes, item) {
-    for (var i=0; i<barcodes.length; i++) {
-        if (barcodes[i]===item.barcode) {
-            return parseInt(item.count/3);
-        }
+    var existBarcode = barcodes.find(function(barcode){
+        return barcode === item.barcode;
+    });
+
+    if (existBarcode) {
+        return parseInt(item.count/3);
+    } else {
+        return 0;
     }
-    return 0;
 }
 
 function calculateFreeCount(mergeItems, promotions) {
