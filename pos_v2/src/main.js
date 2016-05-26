@@ -1,18 +1,22 @@
 function parseTags(inputs) {
     var tags = [];
+
     inputs.forEach(function(item) {
         var tag = {};
         var split = item.split('-', 2);
+
         tag.barcode = split[0];
         tag.count = parseInt(split[1]) || 1;
 
         tags.push(tag);
     })
+
     return tags;
 }
 
 function mergeItem(tags, allItems) {
     var mergeItems = [];
+
     tags.forEach(function(tag) {
         var existItem = mergeItems.find(function(item) {
             return item.barcode === tag.barcode;
@@ -22,6 +26,7 @@ function mergeItem(tags, allItems) {
             var assignItem = allItems.find(function(item) {
                 return item.barcode === tag.barcode;
             });
+
             existItem = Object.assign({
                 count: 0
             }, assignItem);
@@ -66,22 +71,26 @@ function calculateSubTotal(items) {
             subTotal: item.count*item.price,
             actualSubTotal: (item.count-item.freeCount)*item.price,
         }, item);
-    })
+    });
 }
 
 function calculateTotal(cartItems) {
     var total = 0;
+
     cartItems.forEach(function(item) {
         total += item.actualSubTotal;
     });
+
     return total;
 }
 
 function calculateSaveMoney(cartItems) {
     var saveMoney = 0;
+
     cartItems.forEach(function(item) {
         saveMoney += item.freeCount*item.price;
     });
+
     return saveMoney;
 }
 
@@ -97,6 +106,7 @@ function getPromoteItems(cartItems) {
             promoteItems.push(promoteItem);
         }
     });
+
     return promoteItems;
 }
 
@@ -104,6 +114,7 @@ function buildDateString() {
     var dateDigitToString = function (num) {
         return num < 10 ? '0' + num : num;
     };
+
     var currentDate = new Date(),
         year = dateDigitToString(currentDate.getFullYear()),
         month = dateDigitToString(currentDate.getMonth() + 1),
@@ -112,6 +123,7 @@ function buildDateString() {
         minute = dateDigitToString(currentDate.getMinutes()),
         second = dateDigitToString(currentDate.getSeconds()),
         formattedDateString = year + '年' + month + '月' + date + '日 ' + hour + ':' + minute + ':' + second;
+
     return formattedDateString;
 }
 
@@ -137,6 +149,7 @@ function buildReceiptString(cartItems, promoteItems, total, saveMoney) {
 
     console.log(receiptString);
 }
+
 function printInventory(inputs) {
     var allItems = loadAllItems();
     var promotions = loadPromotions();
