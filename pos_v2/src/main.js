@@ -123,7 +123,7 @@ function buildReceiptBody(cartItems) {
     var result = "";
 
     cartItems.forEach(function (item) {
-        result += '名称：' + item.name + '，数量：' + item.count + item.unit + '，单价：' + item.price.toFixed(2) + '(元)，小计：' + item.actualSubTotal.toFixed(2) + '(元)\n';
+        result += `名称：${item.name}，数量：${item.count}${item.unit}，单价：${item.price.toFixed(2)}(元)，小计：${item.actualSubTotal.toFixed(2)}(元)\n`;
     });
     result += "----------------------\n";
 
@@ -135,7 +135,7 @@ function buildPromoteString(freeItems) {
 
     result += '挥泪赠送商品：\n';
     freeItems.forEach(function (item) {
-        result += '名称：' + item.name + '，数量：' + item.freeCount + item.unit + '\n';
+        result += `名称：${item.name}，数量：${item.freeCount}${item.unit}\n`;
     });
 
     return result;
@@ -165,13 +165,14 @@ function buildReceiptString(cartItems, freeItems, total, saveMoney) {
 function printInventory(inputs) {
     var allItems = loadAllItems();
     var promotions = loadPromotions();
+
     var tags = parseTags(inputs);
     var mergeItems = mergeItem(tags, allItems);
     var cartPromoteItems = calculateFreeCount(mergeItems, promotions);
-    var cartItems = calculateSubTotal(cartPromoteItems);
-    var total = calculateTotal(cartItems);
-    var saveMoney = calculateSaveMoney(cartItems);
-    var freeItems = getfreeItems(cartItems);
+    var finalCartItems = calculateSubTotal(cartPromoteItems);
+    var total = calculateTotal(finalCartItems);
+    var saveMoney = calculateSaveMoney(finalCartItems);
+    var freeItems = getfreeItems(finalCartItems);
 
-    buildReceiptString(cartItems, freeItems, total, saveMoney);
+    buildReceiptString(finalCartItems, freeItems, total, saveMoney);
 }
