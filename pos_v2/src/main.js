@@ -1,42 +1,46 @@
 function parseTags(inputs) {
-    var tags = [];
+    var result = [];
 
-    inputs.forEach(function(item) {
-        var tag = {};
-        var split = item.split('-', 2);
+    inputs.forEach(function(input) {
+        var item = {};
+        var split = input.split('-', 2);
 
-        tag.barcode = split[0];
-        tag.count = parseInt(split[1]) || 1;
+        item.barcode = split[0];
+        item.count = parseInt(split[1]) || 1;
 
-        tags.push(tag);
+        result.push(item);
     })
 
-    return tags;
+    return result;
 }
 
-function mergeItem(tags, allItems) {
+function mergeItems(originItems) {
     var mergeItems = [];
 
-    tags.forEach(function(tag) {
+    originItems.forEach(function(tag) {
         var existItem = mergeItems.find(function(item) {
             return item.barcode === tag.barcode;
         });
 
         if (!existItem) {
-            var assignItem = allItems.find(function(item) {
-                return item.barcode === tag.barcode;
-            });
-
-            existItem = Object.assign({
-                count: 0
-            }, assignItem);
-
+            existItem = Object.assign({}, tag);
             mergeItems.push(existItem);
+        } else {
+            existItem.count += tag.count;
         }
-
-        existItem.count += tag.count;
     })
+
     return mergeItems;
+}
+
+function buildOriginCartItems(mergedItems, allItems) {
+    return mergedItems.map(function(mergedItem){
+        var detailItem = allItems.find(function(item){
+            return item.barcode === mergedItem.barcode;
+        });
+
+        return Object.assign({}, detailItem, mergedItem);
+    })
 }
 
 function calculateItemFreeCount(barcodes, item) {
@@ -123,7 +127,8 @@ function buildReceiptBody(cartItems) {
     var result = "";
 
     cartItems.forEach(function (item) {
-        result += `名称：${item.name}，数量：${item.count}${item.unit}，单价：${item.price.toFixed(2)}(元)，小计：${item.actualSubTotal.toFixed(2)}(元)\n`;
+        result += `名称：${item.name}，数量：${item.count}${item.unit}，单价：${item.price.toFixed(2)}(元)，` +
+            `小计：${item.actualSubTotal.toFixed(2)}(元)\n`;
     });
     result += "----------------------\n";
 
@@ -166,9 +171,10 @@ function printInventory(inputs) {
     var allItems = loadAllItems();
     var promotions = loadPromotions();
 
-    var tags = parseTags(inputs);
-    var mergeItems = mergeItem(tags, allItems);
-    var cartPromoteItems = calculateFreeCount(mergeItems, promotions);
+    var originItems = parseTags(inputs);
+    var mergedItems = mergeItems(originItems);
+    var originCartItems = buildOriginCartItems(mergedItems, allItems);
+    var cartPromoteItems = calculateFreeCount(originCartItems, promotions);
     var finalCartItems = calculateSubTotal(cartPromoteItems);
     var total = calculateTotal(finalCartItems);
     var saveMoney = calculateSaveMoney(finalCartItems);
