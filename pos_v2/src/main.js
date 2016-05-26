@@ -94,12 +94,12 @@ function calculateSaveMoney(cartItems) {
     return saveMoney;
 }
 
-function getPromoteItems(cartItems) {
-    var promoteItems = cartItems.filter(function(item){
+function getfreeItems(cartItems) {
+    var result = cartItems.filter(function(item){
         return item.freeCount > 0;
     });
 
-    return promoteItems;
+    return result;
 }
 
 function buildDateString() {
@@ -142,10 +142,10 @@ function buildPromoteString(freeItems) {
 }
 
 function buildTotalString(total, saveMoney) {
-    var result = '----------------------\n'
-        +'总计：' + total.toFixed(2) + '(元)\n'
-        + '节省：' + saveMoney.toFixed(2) + '(元)\n'
-        + "**********************";
+    var result = '----------------------\n' +
+        '总计：' + total.toFixed(2) + '(元)\n' +
+        '节省：' + saveMoney.toFixed(2) + '(元)\n' +
+        "**********************";
 
     return result;
 }
@@ -171,7 +171,7 @@ function printInventory(inputs) {
     var cartItems = calculateSubTotal(cartPromoteItems);
     var total = calculateTotal(cartItems);
     var saveMoney = calculateSaveMoney(cartItems);
-    var freeItems = getPromoteItems(cartItems);
+    var freeItems = getfreeItems(cartItems);
 
     buildReceiptString(cartItems, freeItems, total, saveMoney);
 }
