@@ -138,22 +138,36 @@ function buildReceiptBody(cartItems) {
     return result;
 }
 
+function buildPromoteString(promoteItems) {
+    var result = "";
+
+    result += '挥泪赠送商品：\n';
+    promoteItems.forEach(function (item) {
+        result += '名称：' + item.name + '，数量：' + item.freeCount + item.unit + '\n';
+    });
+
+    return result;
+}
+
+function buildTotalString(total, saveMoney) {
+    var result = "";
+
+    result += '----------------------\n';
+    result += '总计：' + total.toFixed(2) + '(元)\n';
+    result += '节省：' + saveMoney.toFixed(2) + '(元)\n';
+    result += "**********************";
+
+    return result;
+}
+
 function buildReceiptString(cartItems, promoteItems, total, saveMoney) {
     var receiptString = '***<没钱赚商店>购物清单***\n' +
         '打印时间：' + buildDateString() + '\n' +
         '----------------------\n';
 
     receiptString += buildReceiptBody(cartItems);
-
-    receiptString += '挥泪赠送商品：\n';
-    promoteItems.forEach(function(item) {
-        receiptString += '名称：'+item.name+'，数量：'+item.freeCount+item.unit+'\n';
-    });
-
-    receiptString += '----------------------\n';
-    receiptString += '总计：'+total.toFixed(2)+'(元)\n';
-    receiptString += '节省：'+saveMoney.toFixed(2)+'(元)\n';
-    receiptString += "**********************";
+    receiptString += buildPromoteString(promoteItems);
+    receiptString += buildTotalString(total, saveMoney);
 
     console.log(receiptString);
 }
