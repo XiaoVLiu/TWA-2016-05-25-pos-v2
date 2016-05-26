@@ -127,15 +127,23 @@ function buildDateString() {
     return formattedDateString;
 }
 
+function buildReceiptBody(cartItems) {
+    var result = "";
+
+    cartItems.forEach(function (item) {
+        result += '名称：' + item.name + '，数量：' + item.count + item.unit + '，单价：' + item.price.toFixed(2) + '(元)，小计：' + item.actualSubTotal.toFixed(2) + '(元)\n';
+    });
+    result += "----------------------\n";
+
+    return result;
+}
+
 function buildReceiptString(cartItems, promoteItems, total, saveMoney) {
     var receiptString = '***<没钱赚商店>购物清单***\n' +
         '打印时间：' + buildDateString() + '\n' +
         '----------------------\n';
 
-    cartItems.forEach(function(item) {
-        receiptString += '名称：'+item.name+'，数量：'+item.count+item.unit+'，单价：'+item.price.toFixed(2)+'(元)，小计：'+item.actualSubTotal.toFixed(2)+'(元)\n';
-    });
-    receiptString += "----------------------\n";
+    receiptString += buildReceiptBody(cartItems);
 
     receiptString += '挥泪赠送商品：\n';
     promoteItems.forEach(function(item) {
