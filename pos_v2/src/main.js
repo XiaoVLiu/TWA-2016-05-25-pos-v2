@@ -2,14 +2,9 @@ function parseTags(inputs) {
     var tags = [];
     inputs.forEach(function(item) {
         var tag = {};
-        if (item.match('-')) {
-            var split = item.split('-', 2);
-            tag.barcode = split[0];
-            tag.count = parseInt(split[1]);
-        } else {
-            tag.barcode = item;
-            tag.count = 1;
-        }
+        var split = item.split('-', 2);
+        tag.barcode = split[0];
+        tag.count = parseInt(split[1]) || 1;
 
         tags.push(tag);
     })
@@ -142,12 +137,10 @@ function buildReceiptString(cartItems, promoteItems, total, saveMoney) {
 function printInventory(inputs) {
     var allItems = loadAllItems();
     var promotions = loadPromotions();
-
     var tags = parseTags(inputs);
     var mergeItems = mergeItem(tags, allItems);
     var cartPromoteItems = calculateFreeCount(mergeItems, promotions);
     var cartItems = calculateSubTotal(cartPromoteItems);
-
     var total = calculateTotal(cartItems);
     var saveMoney = calculateSaveMoney(cartItems);
     var promoteItems = getPromoteItems(cartItems);
